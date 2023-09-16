@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  bot:
+    build: .
+    command: python main.py
+    volumes:
+      - .:/home/app/bot
+    depends_on:
+      - redis
+    networks:
+      - dead-vibe
+
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_PORT_NUMBER=7777
+    ports:
+      - "7777:7777"
+    networks:
+        - dead-vibe
+
+networks:
+  dead-vibe:
+    driver: bridge
