@@ -58,7 +58,7 @@ class CreateTicketView(discord.ui.View):
         )
         embed.colour = discord.Colour.dark_red()
 
-        await interaction.message.edit(embed=embed)
+        await interaction.message.edit(embed=embed, view=None)
 
         customer = await self.__get_customer(embed.author.name)               
         
