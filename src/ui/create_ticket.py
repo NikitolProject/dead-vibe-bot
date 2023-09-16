@@ -4,7 +4,7 @@ import discord
 
 from src.instance import bot, cache
 from src.ui.confirm_ticket import ConfirmTicketView
-from src.ui.dm import DMView
+from src.ui.decline_modal import Decline
 from src.database.models import TicketStatus
 
 class CreateTicketView(discord.ui.View):
@@ -47,29 +47,7 @@ class CreateTicketView(discord.ui.View):
 
     @discord.ui.button(label="Отколнить", style=discord.ButtonStyle.red)
     async def decline_ticket(self, interaction: discord.Interaction, _: discord.ui.Button) -> None:
-        if interaction.message is None:
-            return None
-
-        embed = interaction.message.embeds[0]
-
-        embed.title = "Заказ отклонён!"
-        embed.set_footer(
-            text=f"{embed.footer.text}. Отклонитель: {interaction.user.name}#{interaction.user.discriminator}"
-        )
-        embed.colour = discord.Colour.dark_red()
-
-        await interaction.message.edit(embed=embed, view=None)
-
-        customer = await self.__get_customer(embed.author.name)               
-        
-        if customer is not None:
-            await customer.send(content=f"Ваш заказ был отклонён {interaction.user.mention}")
-            await cache.write_info_about_user(customer, TicketStatus.NOT_CREATED)
-
-        await interaction.response.send_message(
-            content=f"Заказ был отклонён.",
-            ephemeral=True
-        )
+        await interaction.response.send_modal(Decline())
 
     async def __get_customer(self, nickname: str) -> discord.Member | None:
         guild = await bot.fetch_guild(int(os.environ["GUILD_ID"]))

@@ -4,7 +4,6 @@ from src.instance import (
     bot, logger, cache
 )
 
-from src.utils import create_ticket, create_feedback
 from src.database.models import TicketStatus
 
 
@@ -24,11 +23,6 @@ async def on_message(message: discord.Message) -> None:
     if sender_data.ticket_status == TicketStatus.NOT_CREATED:
         return None
 
-    if sender_data.ticket_status == TicketStatus.PROCCESS_WRITING:
-        await sender.send("Ваше ТЗ переданно к художникам, ожидайте ответа.")
-        await create_ticket(sender, message.content)        
-        await cache.write_info_about_user(sender, TicketStatus.WRITTEN)
-
     if sender_data.ticket_status == TicketStatus.WRITTEN:
         await sender.send("Пожалуйста, ожидайте принятия вашего заказа.")
 
@@ -37,9 +31,4 @@ async def on_message(message: discord.Message) -> None:
             "Пожалуйста, ожидайте когда ваш заказ будет завершён, "
             "либо перейдите в личный диалог с вашим художником."
         )
-
-    if sender_data.ticket_status == TicketStatus.SEND_FEEDBACK:
-        await sender.send("Спасибо за предоставленный отзыв! Приятной вам игры!)")
-        await create_feedback(sender, message.content)        
-        await cache.write_info_about_user(sender, TicketStatus.NOT_CREATED)
 

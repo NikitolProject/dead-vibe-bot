@@ -2,6 +2,7 @@ import discord
 
 from src.instance import bot, cache
 from src.ui.dm import DMView
+from src.ui.send_ticket import SendTicketView
 from src.database.models import TicketStatus
 
 class CreateTaskView(discord.ui.View):
@@ -22,13 +23,14 @@ class CreateTaskView(discord.ui.View):
         await interaction.user.create_dm()
         
         message = discord.Embed(
-            title="Форма подачи заказа:",
-            description="1. Ник.\n2. Подробное тз.\n3. Референсы (если имеются)\n4. Дедлайн.\n\nКарта для оплаты скина - 50162",
+            title="Нажмите на кнопку \"Оформить заказ\" для заполнения формы",
+            description="Также незабудьте его оплатить! Заказы без оплаты будут отклонены. Карта для оплаты скина - 50162",
             colour=discord.Colour.dark_purple()
         )
         message.set_footer(text="ВАЖНО! Отправляйте сообщение строго по форме, иначе заказ будет отклонён")
+        view = SendTicketView()
 
-        await interaction.user.send(embed=message)
+        await interaction.user.send(embed=message, view=view)
 
         view = DMView(interaction.user.dm_channel)
         

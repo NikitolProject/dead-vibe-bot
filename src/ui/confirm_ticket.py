@@ -3,7 +3,7 @@ import os
 import discord
 
 from src.instance import bot, cache
-from src.ui.dm import DMView
+from src.ui.send_feedback import CreateFeedbackView
 from src.database.models import TicketStatus
 
 class ConfirmTicketView(discord.ui.View):
@@ -30,12 +30,12 @@ class ConfirmTicketView(discord.ui.View):
         
         embed = discord.Embed(
             title="Поздравляем! Твой заказ был завершён",
-            description="Пожалуйста, напиши отзыв о исполнителе в этом лс по этой форме:\n"
-                        "1. Ник\n2. Кто принимал заказ?\n3. Отзыв",
+            description="Пожалуйста, заполни форму для оставления отзыва о заказе по кнопке ниже\n",
             colour=discord.Colour.gold()
         )
+        view = CreateFeedbackView()
 
-        await customer.send(embed=embed)
+        await customer.send(embed=embed, view=view)
         await cache.write_info_about_user(customer, TicketStatus.SEND_FEEDBACK)
 
         await interaction.response.send_message(
