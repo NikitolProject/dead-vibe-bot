@@ -37,7 +37,7 @@ class CreateTicketView(discord.ui.View):
                 ephemeral=True
             )
 
-        await customer.send(content="Поздравляем! За твой заказ принялся художник. В скором времени он напишет тебе в личные сообщения.")
+        await customer.send(content="Поздравляем! За ваш заказ принялся художник. В скором времени он напишет вам в личные сообщения.")
         await cache.write_info_about_user(customer, TicketStatus.ACCEPTED)
 
         await interaction.response.send_message(

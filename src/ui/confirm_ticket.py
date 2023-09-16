@@ -29,8 +29,8 @@ class ConfirmTicketView(discord.ui.View):
             return None
         
         embed = discord.Embed(
-            title="Поздравляем! Твой заказ был завершён",
-            description="Пожалуйста, заполни форму для оставления отзыва о заказе по кнопке ниже\n",
+            title="Поздравляем! Ваш заказ был завершён",
+            description="Пожалуйста, заполните форму для оставления отзыва о заказе по кнопке ниже\n",
             colour=discord.Colour.gold()
         )
         view = CreateFeedbackView()
